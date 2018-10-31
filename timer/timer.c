@@ -18,6 +18,9 @@ main(void) {
 	    		P1OUT = x;
 		    	__delay_cycles(1000000);
 		    	x = x >> 1;
+				if (~P2IN & 0x01) {
+					break;
+				}
 	    	}
 		}
     }
