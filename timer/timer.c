@@ -1,5 +1,4 @@
 #include <msp430g2231.h>
-#include <math.h>
 
 main(void) {
     WDTCTL = WDTPW | WDTHOLD; // Stop watchdog timer
@@ -9,11 +8,17 @@ main(void) {
     */
     for(;;)
     {
-	    x = 0xFF;
-	    while (x != 0x00) {
-	    	P1OUT = x;
-	    	__delay_cycles(1000000);
-	    	x = x >> 1;
-	    }
+		if (~P2IN & 0x01)
+		{
+			x = 0xFF;
+			P1OUT = x;
+		} else {				
+	    	x = 0xFF;
+	    	while (x != 0x00) {
+	    		P1OUT = x;
+		    	__delay_cycles(1000000);
+		    	x = x >> 1;
+	    	}
+		}
     }
 }
