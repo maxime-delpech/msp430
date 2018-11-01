@@ -1,4 +1,7 @@
 #include <msp430g2553.h>
+/*
+ * 262.144 = nb cycles for 1/4 second
+ */
 
 int round(int n) {
 	return (int) n - n%1;
@@ -6,7 +9,7 @@ int round(int n) {
 
 void decrement(int *adr_x, int *adr_mask, int seconds) {
 	int i=0;
-	for(i=0;i<seconds-1;i++)
+	for(i=0;i<seconds;i++)
 	{
    		P1OUT = *adr_x & *adr_mask;
 	    __delay_cycles(250000);
@@ -46,24 +49,28 @@ int main(void) {
 	int *adr_x = &x;		//pointer to x
 	int mask = 0x7F;		//mask to manage the blink
 	int *adr_mask = &mask;	//pointer to mask
-	int DURATION = 60;		//total duration of timer
-	int duration_led = round(DURATION/8); //duration per led
-
-	P1OUT = 0xFF;
-	while(P2IN & 0x01) {
-	}
+	int DURATION = 180;		//total duration of timer
+	int duration_led = round(DURATION*0.75/8); //duration per led
 
     for(;;)
     {
+		P1OUT = 0xFF;
+		while(P2IN & 0x01) {
+		}
+
 	   	x = 0xFF;
 		mask = 0x7F;
-		bip(0,1);
 
+		bip(0,1);
 	   	for(i=0;i<8;i++) {
-			decrement(adr_x, adr_mask, duration_led);
-			if (i==3) {
-				bip(0,3);
+			switch (i) {
+				case 0:
+					bip(0,1);
+					break;
+				case 4:
+					bip(0,3);
 			}
+			decrement(adr_x, adr_mask, duration_led);
 		}
 		bip(1,0);
     }
