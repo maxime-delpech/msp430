@@ -4,7 +4,7 @@ CFLAGS := -0s -Wall -mmcu=msp430g2553 -g -lc
 OBJS   := timer.o
 
 $(TARGET): $(OBJS)
-	$(CC) -o $(TARGET) $(CFLAGS) $(OBJS)
+	$(CC) -lm -o $(TARGET) $(CFLAGS) $(OBJS)
 
 clean:
 	rm -rf $(TARGET) $(OBJS)
