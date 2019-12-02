@@ -34,7 +34,8 @@ int main(void) {
 
 		pwm = (rand() >> 3);
 		TACCR1 = pwm;
-		if (pwm > 2048) {
+		//if (pwm > 2048) {
+		if (pwm > 256) {
 			__delay_cycles(20000);
 		} else {
 			__delay_cycles(75000);
